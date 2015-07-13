@@ -23,6 +23,7 @@ var/
 .installed.cfg
 *.egg
 keys.py
+keys.json
 data/
 processed_author_tweets/
 .idea/
