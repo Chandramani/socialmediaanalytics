@@ -1,8 +1,16 @@
 #!/usr/bin/env python
-import tweepy, sys, time
+import time
 from random import randint
+import getopt
+import sys
+import os
+import glob
+import re
+
+import tweepy
+
 from keys import keys
-import getopt, sys
+
 
 def return_cred():
     CONSUMER_KEY = keys['consumer_key']
@@ -35,18 +43,12 @@ def return_cred():
 # log_file.close()
 
 if __name__ == "__main__":
+    global tweets_to_be_sent, image_file, type_of_tweet
     try:
-        opts, remainder = getopt.getopt(sys.argv[1:], "", ["help", "text=", "type=", "image="])
-        type_of_tweet = "text"
-        text_to_tweet = "sample tweet"
-        image_file = ""
+        opts, remainder = getopt.getopt(sys.argv[1:], "", ["type="])
         for opt, arg in opts:
-            if opt in ('--type'):
+            if opt in '--type':
                 type_of_tweet = arg
-            elif opt in ('--text'):
-                text_to_tweet = arg
-            elif opt in ('--image'):
-                image_file = arg
 
         CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET = return_cred()
         auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -55,25 +57,40 @@ if __name__ == "__main__":
                          retry_errors=set([401, 402, 500, 503, 226]))
 
         if type_of_tweet == "image":
-            for i in range(5, 2000):
-                print i
-                s = api.update_with_media(image_file, text_to_tweet + " "+ str(i))
-                # log_file.write(str(i)+"\n")
-                nap = randint(59, 160)
-                time.sleep(nap)
-                # log_file.close()
+            for i in range(1, 11):
+                listing = glob.glob("../tweet*")
+                for path in listing:
+                    for filename in os.listdir(path):
+                        print filename
+                        if re.findall('([-\w]+\.(?:jpg|gif|png))', filename):
+                            image_file = path+"/"+filename
+                            print image_file
+                        elif re.findall('([-\w]+\.(?:txt))', filename):
+                            text_file = filename
+                            tweets_file = open(path+"/"+text_file, "r")
+                            tweets_to_be_sent = tweets_file.readlines()
+                            print tweets_to_be_sent
+                            tweets_file.close()
+                    s = api.update_with_media(image_file, tweets_to_be_sent[0] + " "+ str(i))
+                    # log_file.write(str(i)+"\n")
+                    nap = randint(0, 59)
+                    print "sleeping for", nap, "seconds"
+                    time.sleep(nap)
+                    # log_file.close()
         else:
-            tweets_file = open("tweets_to_be_sent.txt", "r")
-            tweets_to_be_sent = tweets_file.readlines()
-            tweets_file.close()
-            for i in range(5,2000):
-                print i
-                m = str(i) + "  " + text_to_tweet#tweets_to_be_sent[0]
-                s = api.update_status(status=m)
-                # log_file.write(str(i)+"\n")
-                nap = randint(59, 160)
-                time.sleep(nap)
-
+            for i in range(1, 11):
+                listing = glob.glob("../tweet*/*")
+                for path in listing:
+                    if re.findall('([-\w]+\.(?:txt))', path):
+                        text_file = path
+                        tweets_file = open("tweets_to_be_sent.txt", "r")
+                        tweets_to_be_sent = tweets_file.readlines()
+                        tweets_file.close()
+                    m = str(i) + "  " + tweets_to_be_sent[0]#tweets_to_be_sent[0]
+                    s = api.update_status(status=m)
+                    # log_file.write(str(i)+"\n")
+                    nap = randint(0, 59)
+                    time.sleep(nap)
 
     except getopt.GetoptError as err:
         # print help information and exit:

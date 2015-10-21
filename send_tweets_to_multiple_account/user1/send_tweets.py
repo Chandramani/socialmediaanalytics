@@ -1,7 +1,11 @@
 #!/usr/bin/env python
-import tweepy, sys, time
+import time
 from random import randint
-from keys import keys
+
+import tweepy
+
+from send_tweets_to_multiple_account.copy_to_folder import keys
+
 
 CONSUMER_KEY = keys['consumer_key']
 CONSUMER_SECRET = keys['consumer_secret']

@@ -24,6 +24,7 @@ var/
 *.egg
 keys.py
 keys.json
+active_users.txt
 data/
 processed_author_tweets/
 .idea/
