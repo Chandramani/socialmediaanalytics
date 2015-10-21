@@ -3,6 +3,6 @@
 for dir in `ls -d user*`;
 do
 cd $dir
-python retweet_tweets_for_handles.py &
+python send_tweets_multiple_times.py --type="image" &
 cd ..
 done
