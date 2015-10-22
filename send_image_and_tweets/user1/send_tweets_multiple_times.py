@@ -19,29 +19,6 @@ def return_cred():
     ACCESS_TOKEN_SECRET = keys['access_token_secret']
     return CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 
-# handles = "active_users.txt"
-# f = open(handles, "r")
-# h = f.readlines()
-# f.close()
-
-# tweets_file = open("tweets_to_be_sent.txt", "r")
-# tweets_to_be_sent = tweets_file.readlines()
-# tweets_file.close()
-
-# number_of_users = len(h)
-# if number_of_users > 2000:
-# number_of_users = 2000
-
-# log_file = open("send_tweets_logs.txt","a")
-# for i in range(5,2000):
-#     print i
-#     m = str(i) + "  " + tweets_to_be_sent[0]
-#     s = api.update_status(status=m)
-#     log_file.write(str(i)+"\n")
-#     nap = randint(59, 160)
-#     time.sleep(nap)
-# log_file.close()
-
 if __name__ == "__main__":
     global tweets_to_be_sent, image_file, type_of_tweet
     try:
