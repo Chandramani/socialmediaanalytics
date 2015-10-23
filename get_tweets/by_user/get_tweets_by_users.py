@@ -3,18 +3,17 @@
 
 import sys
 import csv
+
 import tweepy
 from keys import keys
-# import numpy as np
 
 # Get your Twitter API credentials and enter them here
 consumer_key = keys['consumer_key']
 consumer_secret = keys['consumer_secret']
 access_token = keys['access_token']
 access_token_secret = keys['access_token_secret']
+
 # method to get a user's last 100 tweets
-
-
 def get_tweets(username):
     # http://tweepy.readthedocs.org/en/v3.1.0/getting_started.html#api
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -37,23 +36,17 @@ def get_tweets(username):
         writer = csv.writer(file_name, delimiter='|')
         writer.writerows(tweets_for_csv)
 
-    # file_open = open("{0}_tweets.csv".format(username), 'r')
-    # for line in file_open:
-    #     array = line.split("|")[5]
-    #     print array
-
 
 # if we're running this as a script
 if __name__ == '__main__':
 
     # get tweets for username passed at command line
     if len(sys.argv) == 2:
+        print "getting tweets for handle", sys.argv[1]
         get_tweets(sys.argv[1])
     else:
-        print "Error: enter one username"
-
+        print "getting tweets for multiple handles"
         # alternative method: loop through multiple users
-    # users = ['user1','user2']
-
-    # for user in users:
-    # 	get_tweets(user)
+        users = sys.argv[1:len(sys.argv)]
+        for user in users:
+            get_tweets(user)

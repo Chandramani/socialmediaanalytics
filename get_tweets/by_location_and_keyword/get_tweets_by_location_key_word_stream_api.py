@@ -16,25 +16,25 @@ access_token_secret = keys['access_token_secret']
 class StdOutListener(StreamListener):
     track_words = ['bc subplan', 'bc sub plan', 'bc reservations', 'bc reservation', 'bc sub-plan', 'obc subplan',
                    'obc sub plan',
-                   'obc sub-plan', 'obc reservations', 'obc reservation', 'caste reservation','#SingleBecause','#SuperstarKidnap','bc']
+                   'obc sub-plan', 'obc reservations', 'obc reservation', 'caste reservation', '#SingleBecause',
+                   '#SuperstarKidnap', 'bc']
+    # make this config driven
 
     def on_data(self, data):
         try:
-
-            saveFile = open('bc_suplan_tweets.json', 'a')
+            saveFile = open('location_keyword_tweets.json', 'a')
             data = json.loads(data)
-            #print data["text"]
+            # print data["text"]
             if any(x in data["text"] for x in self.track_words):
                 print data["text"]
                 saveFile.write(data)
                 saveFile.close()
-                #return True
+                # return True
             else:
-                pass #print "no match"
-
+                pass  # print "no match"
 
         except BaseException, e:
-            print 'failed ondata,', str(e),data["text"]
+            print 'failed on data,', str(e), data["text"]
             time.sleep(5)
             pass
 
@@ -49,5 +49,4 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
     hyderabad_geo_box = [78.2176, 17.18278, 78.693248, 17.624824]
-    # stream.filter(track=['keyword'])
     stream.filter(locations=hyderabad_geo_box)
