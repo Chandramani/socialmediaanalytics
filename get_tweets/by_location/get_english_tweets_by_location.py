@@ -20,11 +20,10 @@ class StdOutListener(StreamListener):
     def on_data(self, data):
                         try:
 
-                                save_file = open('raw_tweets.json', 'a')
+                                save_file = open('raw_tweets_by_location.json', 'a')
                                 print data
                                 save_file.write(data)
                                 save_file.close()
-
                                 return True
 
                         except BaseException, e:
